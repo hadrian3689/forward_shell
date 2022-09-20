@@ -1,8 +1,4 @@
-# Project Title
-
-Forward Shell Remote Command Execution using mkfifo
-
-## Description
+# Forward Shell Remote Command Execution using mkfifo
 
 A python3 script for Remote Command Execution that uses mkfifo to create a name pipe between a input and output file. Perfect for firewall evasion. The URL parameter I use for this exploit is **rse** but feel free to change it.
 
